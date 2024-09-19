@@ -28,9 +28,11 @@ async def websocket_endpoint(websocket: WebSocket, db: Session = Depends(databas
 
 @app.get("/api/fireworks")
 async def get_fireworks(db: Session = Depends(database.get_db)):
-    fireworks = db.query(models.Firework).all()
-    return fireworks
-    
+    latest_firework = db.query(models.Firework).order_by(models.Firework.id.desc()).first()
+    if latest_firework:
+        return {"latest_id": latest_firework.id}
+    return {"latest_id": None}
+
 @app.get("/")
 async def read_root():
     return {"Hello": "World"}

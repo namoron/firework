@@ -81,19 +81,22 @@
 
       animate();
 
+      let lastFireworkId = null;
+
       function fetchData() {
         fetch("/api/fireworks")
           .then((response) => response.json())
           .then((data) => {
-            // 新しいデータが来たら花火を打ち上げる
-            if (data.length > 0) {
-              launchFirework();
+            // 新しいデータのlatest_idが前回のidと異なるか確認
+            if (data.latest_id && data.latest_id !== lastFireworkId) {
+              lastFireworkId = data.latest_id;
+              launchFirework(); // 新しい花火を打ち上げる
             }
           })
           .catch((error) => console.error("エラー:", error));
       }
 
-      setInterval(fetchData, 5000);
+      setInterval(fetchData, 1);
 
       window.addEventListener("resize", () => {
         canvas.width = window.innerWidth;
