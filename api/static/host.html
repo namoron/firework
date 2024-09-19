@@ -96,7 +96,7 @@
           .catch((error) => console.error("エラー:", error));
       }
 
-      setInterval(fetchData, 1);
+      setInterval(fetchData, 100);
 
       window.addEventListener("resize", () => {
         canvas.width = window.innerWidth;
