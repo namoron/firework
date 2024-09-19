@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>クライアント</title>
+  </head>
+  <body>
+    <button id="fireworksButton">花火を打ち上げる</button>
+    <script>
+      const socket = new WebSocket("ws://localhost:8001/ws");
+      const button = document.getElementById("fireworksButton");
+
+      button.addEventListener("click", () => {
+        socket.send("1");
+      });
+    </script>
+  </body>
+</html>

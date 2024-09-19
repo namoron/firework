@@ -1,0 +1,25 @@
+services:
+  app:
+    build: .
+    volumes:
+      - .dockervenv:/src/.venv
+      - ./api:/src/api
+      - ./pyproject.toml:/src/pyproject.toml
+    ports:
+      - 8001:8000 # ホストマシンのポート8000を、docker内のポート8000に接続する
+    env_file:
+      - .env
+
+  db:
+    image: postgres:15
+    volumes:
+      - ./api/db/postgresql/data:/var/lib/postgresql/data
+      - ./api/db/postgres:/docker-entrypoint-initdb.d
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --locale=C
+    env_file:
+      - .env

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ホスト</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fireworks/1.0.0/fireworks.min.js"></script>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: black;
+      }
+      #fireworks {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="fireworks"></div>
+    <script>
+      const container = document.getElementById("fireworks");
+      const fireworks = new Fireworks(container, {
+        opacity: 0.5,
+        traceLength: 3,
+        traceSpeed: 10,
+        explosion: 5,
+        intensity: 30,
+        flickering: 50,
+        lineStyle: "round",
+        hue: {
+          min: 0,
+          max: 360,
+        },
+      });
+
+      const socket = new WebSocket("ws://localhost:8001/ws");
+      socket.onmessage = (event) => {
+        const count = parseInt(event.data.split(":")[1]);
+        for (let i = 0; i < count; i++) {
+          fireworks.fire();
+        }
+      };
+    </script>
+  </body>
+</html>
