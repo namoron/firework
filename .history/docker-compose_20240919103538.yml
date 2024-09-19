@@ -1,0 +1,10 @@
+version: "3"
+services:
+  webserver:
+    build: .
+    tty: true
+    volumes:
+      - ./app:/firework/app
+      - /package.json:/firework/package.json
+    ports:
+      - "3001:3000"
