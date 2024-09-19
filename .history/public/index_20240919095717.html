@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>リアルタイムクリックカウンター</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+      }
+      .container {
+        text-align: center;
+      }
+      #clickCount {
+        font-size: 48px;
+        margin-bottom: 20px;
+      }
+      button {
+        font-size: 24px;
+        padding: 10px 20px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div id="clickCount">0</div>
+      <button id="clickButton">クリック！</button>
+    </div>
+
+    <script>
+      const clickButton = document.getElementById("clickButton");
+      const clickCountDisplay = document.getElementById("clickCount");
+
+      const eventSource = new EventSource("/events");
+      eventSource.onmessage = (event) => {
+        clickCountDisplay.textContent = event.data;
+      };
+
+      clickButton.addEventListener("click", () => {
+        fetch("/click", { method: "POST" });
+      });
+    </script>
+  </body>
+</html>
