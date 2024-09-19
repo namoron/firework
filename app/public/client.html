@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>クライアント画面</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      button {
+        font-size: 24px;
+        padding: 10px 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="fireworkButton">花火を打ち上げる</button>
+
+    <script>
+      const socket = new WebSocket("ws://localhost:3000");
+      const fireworkButton = document.getElementById("fireworkButton");
+
+      fireworkButton.addEventListener("click", () => {
+        socket.send(JSON.stringify({ type: "firework" }));
+      });
+    </script>
+  </body>
+</html>
