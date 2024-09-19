@@ -21,10 +21,16 @@ async def websocket_endpoint(websocket: WebSocket, db: Session = Depends(databas
             firework = models.Firework(client_id=str(id(websocket)), count=count)
             db.add(firework)
             db.commit()
-            await websocket.send_text(f"Fireworks: {count}")
+            latest_id = firework.id
+            await websocket.send_text(f'{{"id": {latest_id}}}')
     except WebSocketDisconnect:
         pass
 
+@app.get("/api/fireworks")
+async def get_fireworks(db: Session = Depends(database.get_db)):
+    fireworks = db.query(models.Firework).all()
+    return fireworks
+    
 @app.get("/")
 async def read_root():
     return {"Hello": "World"}
